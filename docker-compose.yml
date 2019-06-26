@@ -1,0 +1,38 @@
+version: '2.4'
+services:
+
+  data-exploration:
+    image: "tensorflow/tensorflow:2.0.0b1-py3-jupyter"
+    init: true
+
+    # runtime: nvidia
+    ports:
+      - 8888:8888
+
+    volumes:
+      - ./data:/data
+      - ./notebooks:/notebooks
+      - ./kmnist:/kmnist
+
+    working_dir: /notebooks
+
+    command: jupyter notebook --no-browser --allow-root --ip 0.0.0.0 --NotebookApp.custom_display_url=http://localhost:8888 
+
+  develop:
+    image: "tensorflow/tensorflow:2.0.0b1-gpu-py3-jupyter"
+    init: true
+
+    runtime: nvidia
+
+    volumes:
+      - ./data:/data
+      - ./notebooks:/notebooks
+      - ./kmnist:/kmnist
+
+    working_dir: /kmnist
+
+    stdin_open: true
+    tty: true
+
+    command: jupyter notebook --no-browser --allow-root --ip 0.0.0.0 --NotebookApp.custom_display_url=http://localhost:8888 
+
